@@ -1,4 +1,4 @@
-package util
+package utils
 
 import (
 	"net/http"
@@ -20,7 +20,7 @@ func HttpGet(url string, header, cookie, param map[string]string) *http.Response
 	url = url + paramStr
 	request, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
-		Error.Fatalln(err)
+		Error.Println(err)
 	}
 	request.Header.Add("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Mobile Safari/537.36")
 	if len(header) != 0 {
@@ -34,7 +34,7 @@ func HttpGet(url string, header, cookie, param map[string]string) *http.Response
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		Error.Fatalln(err)
+		Error.Println(err)
 	}
 	return response
 }
@@ -42,7 +42,7 @@ func HttpGet(url string, header, cookie, param map[string]string) *http.Response
 func HttpPost(url string, header, cookie map[string]string, body string) *http.Response {
 	request, err := http.NewRequest(http.MethodPost, url, strings.NewReader(body))
 	if err != nil {
-		Error.Fatalln(err)
+		Error.Println(err)
 	}
 	request.Header.Add("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Mobile Safari/537.36")
 	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
@@ -57,7 +57,7 @@ func HttpPost(url string, header, cookie map[string]string, body string) *http.R
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		Error.Fatalln(err)
+		Error.Println(err)
 	}
 	return response
 }

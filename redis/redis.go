@@ -2,37 +2,38 @@ package redis
 
 import (
 	"github.com/go-redis/redis"
-	"hot/common/util"
+	"github.com/spf13/viper"
+	"hot/utils"
 )
 
 var client *redis.Client
 
 func init() {
 	client = redis.NewClient(&redis.Options{
-		Addr:     "118.25.84.140:6379", // ip:port
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Addr:     viper.GetString("redis.source"),   // ip:port
+		Password: viper.GetString("redis.password"), // no password set
+		DB:       viper.GetInt("redis.db"),          // use default DB
 	})
 }
 
-func Set(key string, value interface{})  {
+func Set(key string, value interface{}) {
 	err := client.Set(key, value, 0).Err()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 }
 
 func Get(key string) string {
 	value, err := client.Get(key).Result()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	return value
 }
 
-func Exist()  {
-}
-
-func Del(key string)  {
-	client.Del(key)
+func Del(key string) {
+	err := client.Del(key).Err()
+	if err != nil {
+		utils.Error.Println(err)
+	}
 }

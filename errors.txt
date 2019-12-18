@@ -1,8 +1,0 @@
-Error: 2019/12/09 20:51:25 /Users/zhaolincheng/go/src/hot/common/util/logutil.go:30: Get https:: http: no Host in request URL
-Error: 2019/12/09 20:54:32 /Users/zhaolincheng/go/src/hot/common/util/logutil.go:30: Get https:: http: no Host in request URL
-Error: 2019/12/09 20:54:42 /Users/zhaolincheng/go/src/hot/common/util/logutil.go:30: Get https:: http: no Host in request URL
-Error: 2019/12/09 20:56:38 /Users/zhaolincheng/go/src/hot/common/util/logutil.go:30: Get https:: http: no Host in request URL
-Error: 2019/12/09 20:56:46 /Users/zhaolincheng/go/src/hot/common/util/logutil.go:30: Get https:: http: no Host in request URL
-Error: 2019/12/09 20:57:09 /Users/zhaolincheng/go/src/hot/common/util/logutil.go:30: Get https:: http: no Host in request URL
-Error: 2019/12/09 20:57:41 /Users/zhaolincheng/go/src/hot/common/util/logutil.go:30: Get https:: http: no Host in request URL
-Error: 2019/12/09 21:07:25 /Users/zhaolincheng/go/src/hot/common/util/httputil.go:37: Get https:: http: no Host in request URL

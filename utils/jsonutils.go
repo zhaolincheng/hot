@@ -1,4 +1,4 @@
-package util
+package utils
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 func InterfaceToJsonString(v interface{}) string {
 	str, err := json.Marshal(v)
 	if err != nil {
-		Error.Fatalln(err)
+		Error.Println(err)
 	}
 	return string(str)
 }
@@ -15,6 +15,6 @@ func InterfaceToJsonString(v interface{}) string {
 func JsonStringToInterface(str string, v interface{}) {
 	err := json.Unmarshal([]byte(str), v)
 	if err != nil {
-		Error.Fatalln(err)
+		Error.Println(err)
 	}
 }

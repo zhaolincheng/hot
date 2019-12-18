@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"hot/common/util"
+	"github.com/spf13/viper"
+	"hot/utils"
 	"log"
 	"math"
 	"strconv"
@@ -25,14 +26,13 @@ type MySql struct {
 
 // 初始化连接池
 func init() {
-	config := GetConfig()
-	db, err := sql.Open(config.Driver, config.Source)
+	db, err := sql.Open(viper.GetString("mysql.driver"), viper.GetString("mysql.source"))
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
-	db.SetMaxOpenConns(config.MaxOpenConns)       // 最大链接
-	db.SetMaxIdleConns(config.MaxIdleConns)       // 空闲连接，也就是连接池里面的数量
-	db.SetConnMaxLifetime(config.ConnMaxLifetime) // 连接最大生命周期
+	db.SetMaxOpenConns(viper.GetInt("mysql.maxOpenConns"))            // 最大链接
+	db.SetMaxIdleConns(viper.GetInt("mysql.maxIdleConns"))            // 空闲连接，也就是连接池里面的数量
+	db.SetConnMaxLifetime(viper.GetDuration("mysql.connMaxLifetime")) // 连接最大生命周期
 	globalDb = db
 }
 
@@ -44,7 +44,7 @@ func (MySql MySql) GetConn() *MySql {
 func (MySql *MySql) Close() {
 	err := MySql.conn.Close()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 }
 
@@ -110,15 +110,15 @@ func (MySql MySql) Update(table string, str map[string]string) int64 {
 	var allStr = MySql.exec + MySql.where
 	stmt, err := MySql.conn.Prepare(allStr)
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	res, err := stmt.Exec(allValue...)
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	rows, err := res.RowsAffected()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	return rows
 
@@ -133,15 +133,15 @@ func (MySql MySql) Delete(table string) int64 {
 	fmt.Println(tempStr)
 	stmt, err := MySql.conn.Prepare(tempStr)
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	res, err := stmt.Exec()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	rows, err := res.RowsAffected()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	return rows
 }
@@ -167,15 +167,15 @@ func (MySql MySql) Insert(table string, data map[string]string) int64 {
 	var theStr = "insert into " + table + " " + allField + " values " + allValue
 	stmt, err := MySql.conn.Prepare(theStr)
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	res, err := stmt.Exec(allTrueValue...)
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	id, err := res.LastInsertId()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	return id
 }
@@ -202,11 +202,11 @@ func (MySql MySql) Pagination(Page int, Limit int) map[string]interface{} {
 		defer rows.Close()
 	}
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	Column, err := rows.Columns()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	// 创建一个查询字段类型的slice
 	values := make([]sql.RawBytes, len(Column))
@@ -222,7 +222,7 @@ func (MySql MySql) Pagination(Page int, Limit int) map[string]interface{} {
 		// 把存放字段的元素批量放进去
 		err = rows.Scan(scanArgs...)
 		if err != nil {
-			util.Error.Fatalln(err)
+			utils.Error.Println(err)
 		}
 		tempRow := make(map[string]string, len(Column))
 		for i, col := range values {
@@ -245,11 +245,11 @@ func (MySql MySql) QueryAll() []map[string]string {
 		defer rows.Close()
 	}
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	Column, err := rows.Columns()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	// 创建一个查询字段类型的slice
 	values := make([]sql.RawBytes, len(Column))
@@ -265,7 +265,7 @@ func (MySql MySql) QueryAll() []map[string]string {
 		// 把存放字段的元素批量放进去
 		err = rows.Scan(scanArgs...)
 		if err != nil {
-			util.Error.Fatalln(err)
+			utils.Error.Println(err)
 		}
 		tempRow := make(map[string]string, len(Column))
 		for i, col := range values {
@@ -283,11 +283,11 @@ func (MySql MySql) ExecSql(queryStr string) []map[string]string {
 		defer rows.Close()
 	}
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	Column, err := rows.Columns()
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	// 创建一个查询字段类型的slice
 	values := make([]sql.RawBytes, len(Column))
@@ -303,7 +303,7 @@ func (MySql MySql) ExecSql(queryStr string) []map[string]string {
 		// 把存放字段的元素批量放进去
 		err = rows.Scan(scanArgs...)
 		if err != nil {
-			util.Error.Fatalln(err)
+			utils.Error.Println(err)
 		}
 		tempRow := make(map[string]string, len(Column))
 		for i, col := range values {
@@ -325,7 +325,7 @@ func (MySql MySql) QueryRow() map[string]string {
 		defer result.Close()
 	}
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 	Column, err := result.Columns()
 	// 创建一个查询字段类型的slice的键值对
@@ -340,7 +340,7 @@ func (MySql MySql) QueryRow() map[string]string {
 	for result.Next() {
 		err = result.Scan(scanArgs...)
 		if err != nil {
-			util.Error.Fatalln(err)
+			utils.Error.Println(err)
 		}
 	}
 	tempRow := make(map[string]string, len(Column))

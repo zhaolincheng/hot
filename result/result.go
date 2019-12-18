@@ -1,15 +1,15 @@
-package common
+package result
 
 import (
 	"fmt"
-	"hot/common/util"
+	"hot/utils"
 	"net/http"
 )
 
 type Result struct {
-	Code int
+	Code    int
 	Message string
-	Data interface{}
+	Data    interface{}
 }
 
 func Success(data interface{}, w http.ResponseWriter) {
@@ -22,11 +22,11 @@ func Error(code int, message string, w http.ResponseWriter) {
 	writeResponse(result, w)
 }
 
-func writeResponse(result Result, w http.ResponseWriter)  {
-	jsonStr := util.InterfaceToJsonString(result)
+func writeResponse(result Result, w http.ResponseWriter) {
+	jsonStr := utils.InterfaceToJsonString(result)
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	_, err := fmt.Fprintf(w, "%s", jsonStr)
 	if err != nil {
-		util.Error.Fatalln(err)
+		utils.Error.Println(err)
 	}
 }

@@ -1,0 +1,11 @@
+port: 8080
+mysql:
+  source: "zlc:960608@tcp(111.229.108.188)/mysql?charset=utf8"
+  driver: "mysql"
+  maxIdleConns: 5
+  maxOpenConns: 10
+  connMaxLifetime: 3600000000000
+redis:
+  source: "111.229.108.188:6379"
+  password: ""
+  db: 0
