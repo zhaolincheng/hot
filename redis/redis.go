@@ -16,6 +16,13 @@ func init() {
 	})
 }
 
+func Ping() {
+	err := client.Ping().Err()
+	if err != nil {
+		utils.Error.Println(err)
+	}
+}
+
 func Set(key string, value interface{}) {
 	err := client.Set(key, value, 0).Err()
 	if err != nil {

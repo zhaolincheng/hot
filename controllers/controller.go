@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"github.com/spf13/viper"
@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func Router()  {
+func Router() {
 	router.GetHandleFunc("/hello", helloGet)
 	router.PostHandleFunc("/hello", helloPost)
 	router.PostHandleFunc("/login", login)

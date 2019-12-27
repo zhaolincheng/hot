@@ -2,9 +2,9 @@ package main
 
 import (
 	_ "hot/config"
-	"hot/controller"
+	"hot/controllers"
 )
 
 func main() {
-	controller.Router()
+	controllers.Router()
 }

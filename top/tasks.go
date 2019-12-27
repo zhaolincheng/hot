@@ -1,4 +1,4 @@
-package scheduled
+package top
 
 import (
 	"fmt"
@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-func getZhihuTop() {
+func GetZhihuTop() {
 	fmt.Println("zhihu")
 }
-func getBaiduTop() {
+func GetBaiduTop() {
 	fmt.Println("baidu")
 }
 
-func getWeiboTop() {
+func GetWeiboTop() {
 	url := "https://s.weibo.com/top/summary"
 	response := utils.HttpGet(url, nil, nil, nil)
 	//str,_ := ioutil.ReadAll(response.Body)
